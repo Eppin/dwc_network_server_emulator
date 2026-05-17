@@ -1,0 +1,38 @@
+services:
+  backend:
+    container_name: dwc_backend
+    build:
+      context: .
+      dockerfile: services.Dockerfile
+    # networks:
+    #   - dwc_docker
+    ports:
+      - "8000:8000"
+      - "9000:9000"
+      - "9002:9002"
+      - "9003:9003"
+      - "9009:9009"
+
+# Alternative to Nginx, Apache can be used as a reverse proxy, 
+# but it hasn't been tested yet. If you want to use Apache, uncomment the following section and comment out the Nginx section.
+#   proxy:
+#     container_name: apache_proxy
+#     build:
+#       context: tools/docker
+#       dockerfile: apache.Dockerfile
+# #    environment:
+# #      - DWC_HOST=example.com
+#     ports:
+#       - "443:443"
+#       - "80:80"
+
+  proxy:
+    container_name: nginx_proxy
+    build:
+      context: tools/docker
+      dockerfile: nginx.Dockerfile
+#    environment:
+#      - DWC_HOST=example.com
+    ports:
+      - "443:443"
+      - "80:80"
